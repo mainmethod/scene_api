@@ -1,28 +1,22 @@
+""" Video model and schemas """
 from scene_api.extensions import db, marshmallow
+from scene_api.base.models import BaseModel, BaseSchema
 
 
-class Video(db.Model):
+class Video(BaseModel):
+    """SQLAlchemy model for Videos"""
+
     __tablename__ = "video"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     url = db.Column(db.String)
 
-    def save(self, commit=True):
-        db.session.add(self)
-        if commit:
-            try:
-                db.session.commit()
-                return self
-            except Exception as e:
-                db.session.rollback()
-                raise e
 
+class VideoSchema(BaseSchema):
+    """Schema for a video"""
 
-class VideoSchema(marshmallow.SQLAlchemyAutoSchema):
-    class Meta:
+    class Meta(BaseSchema.Meta):
         model = Video
-        load_instance = True
-        sqla_session = db.session
 
 
 video_schema = VideoSchema()
