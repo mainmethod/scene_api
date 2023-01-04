@@ -10,3 +10,4 @@ class Video(BaseModel):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     url = db.Column(db.String, nullable=False)
+    votes = db.relationship("Vote", back_populates="video", lazy="joined")

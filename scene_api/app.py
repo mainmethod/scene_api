@@ -5,6 +5,8 @@ from scene_api.extensions import (
     marshmallow,
     migrate,
 )
+
+# from scene_api.api.routes import video_blueprint, vote_blueprint
 from scene_api import routes
 
 
@@ -32,4 +34,5 @@ def register_extensions(app):
 def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(routes.video.blueprint)
+    app.register_blueprint(routes.vote.blueprint)
     return None
