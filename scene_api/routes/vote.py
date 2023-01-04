@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint
 from webargs.flaskparser import use_args
 
 from scene_api.models.vote import Vote
@@ -15,10 +15,8 @@ def list():
 
 
 @blueprint.route("/", methods=("POST",))
-# @use_args(vote_schema)
-def create():
+@use_args(vote_schema)
+def create(args):
     """Create a vote"""
-    data = request.get_json(force=True)
-    new_vote = vote_schema.load(data)
-    vote = Vote.save(new_vote)
+    vote = Vote.save(args)
     return vote_schema.dump(vote)
