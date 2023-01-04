@@ -1,4 +1,6 @@
 from flask import Blueprint, request
+from webargs.flaskparser import use_args
+
 from scene_api.models.video import Video
 from scene_api.schemas.video import video_schema, videos_schema
 
@@ -13,9 +15,8 @@ def list():
 
 
 @blueprint.route("/", methods=("POST",))
-def create():
+@use_args(video_schema)
+def create(args):
     """Create a video"""
-    video_json = request.get_json(force=True)
-    new_video = video_schema.load(video_json)
-    video = Video.save(new_video)
+    video = Video.save(args)
     return video_schema.dump(video)

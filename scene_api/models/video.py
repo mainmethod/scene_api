@@ -9,4 +9,4 @@ class Video(BaseModel):
     __tablename__ = "video"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    url = db.Column(db.String)
+    url = db.Column(db.String, nullable=False)

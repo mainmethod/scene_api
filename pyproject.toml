@@ -12,6 +12,7 @@ flask = "^2.2.2"
 flask-sqlalchemy = "^3.0.2"
 flask-marshmallow = {extras = ["sqlalchemy"], version = "^0.14.0"}
 flask-migrate = "^4.0.0"
+webargs = "^8.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
