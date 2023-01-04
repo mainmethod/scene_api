@@ -1,4 +1,4 @@
-from scene_api.extensions import db, marshmallow
+from scene_api.extensions import db
 
 
 class BaseModel(db.Model):
@@ -15,11 +15,3 @@ class BaseModel(db.Model):
         except Exception as e:
             db.session.rollback()
             raise e
-
-
-class BaseSchema(marshmallow.SQLAlchemyAutoSchema):
-    """Schema for a video"""
-
-    class Meta:
-        load_instance = True
-        sqla_session = db.session

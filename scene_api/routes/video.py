@@ -1,5 +1,6 @@
 from flask import Blueprint, request
-from .models import Video, video_schema, videos_schema
+from scene_api.models.video import Video
+from scene_api.schemas.video import video_schema, videos_schema
 
 blueprint = Blueprint("video_blueprint", __name__, url_prefix="/videos")
 
