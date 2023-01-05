@@ -1,5 +1,6 @@
 """ Video schemas """
-from marshmallow_sqlalchemy import fields
+from marshmallow import fields
+from marshmallow_sqlalchemy.fields import Nested
 from scene_api.schemas.base import BaseSchema
 from scene_api.models.video import Video
 
@@ -7,9 +8,7 @@ from scene_api.models.video import Video
 class VideoSchema(BaseSchema):
     """Schema for a video"""
 
-    votes = fields.Nested(
-        "VoteSchema", many=True, only=("id", "voter_email"), dump_only=True
-    )
+    vote_count = fields.Int(dump_only=True)
 
     class Meta(BaseSchema.Meta):
         model = Video
