@@ -10,7 +10,7 @@ blueprint = Blueprint("video_blueprint", __name__, url_prefix="/videos")
 @blueprint.route("/", methods=("GET", "OPTIONS"))
 def list():
     """List all videos"""
-    videos = Video.query.all()
+    videos = Video.query.filter(Video.deleted_on == None).all()
     return videos_schema.dump(videos)
 
 
