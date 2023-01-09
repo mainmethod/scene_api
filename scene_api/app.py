@@ -1,4 +1,3 @@
-import pathlib
 from flask import Flask
 from scene_api.extensions import (
     db,
@@ -12,11 +11,10 @@ from scene_api import routes
 
 def create_app():
     """Create application factory."""
-    basedir = pathlib.Path(__file__).parent.resolve()
+
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{basedir / 'scene_app.db'}"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config.from_pyfile("settings.py")
 
     register_extensions(app)
     register_blueprints(app)
