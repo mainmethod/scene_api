@@ -3,7 +3,12 @@ from webargs.flaskparser import use_args
 from werkzeug.utils import secure_filename
 
 from scene_api.models.video import Video
-from scene_api.schemas.video import video_schema, videos_schema
+from scene_api.schemas.video import (
+    video_upload_request_schema,
+    video_upload_response_schema,
+    video_schema,
+    videos_schema,
+)
 from scene_api.services.uploader import send_to_s3
 
 blueprint = Blueprint("video_blueprint", __name__, url_prefix="/videos")
@@ -25,20 +30,12 @@ def create(args):
 
 
 @blueprint.route("/upload", methods=("POST",))
-def upload():
+@use_args(video_upload_request_schema, location="files")
+def upload(args):
     """Upload video to s3"""
-    if "file" not in request.files:
-        return "No file key in request.files"
 
-    file = request.files["file"]
+    file = args["file"]
 
-    if file.filename == "":
-        return "Please select a file"
-
-    if file:
-        file.filename = secure_filename(file.filename)
-        output = send_to_s3(file)
-        return str(output)
-
-    else:
-        return "no file"
+    file.filename = secure_filename(file.filename)
+    file_response = send_to_s3(file)
+    return video_upload_response_schema.dump({"file": file_response})
