@@ -1,6 +1,5 @@
 """ Video schemas """
 from marshmallow import fields, Schema
-from marshmallow_sqlalchemy.fields import Nested
 from scene_api.schemas.base import BaseSchema
 from scene_api.models.video import Video
 

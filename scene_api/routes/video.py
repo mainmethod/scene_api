@@ -1,7 +1,7 @@
-from flask import Blueprint, request
+from flask import Blueprint
 from webargs.flaskparser import use_args
 from werkzeug.utils import secure_filename
-
+from scene_api.exceptions.errors import VideoUploadError
 from scene_api.models.video import Video
 from scene_api.schemas.video import (
     video_upload_request_schema,
@@ -37,5 +37,8 @@ def upload(args):
     file = args["file"]
 
     file.filename = secure_filename(file.filename)
-    file_response = send_to_s3(file)
+    try:
+        file_response = send_to_s3(file)
+    except VideoUploadError as error:
+        raise error
     return video_upload_response_schema.dump({"file": file_response})

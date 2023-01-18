@@ -1,5 +1,7 @@
 import boto3
+import botocore
 from os import environ
+from scene_api.exceptions.errors import VideoUploadError
 
 s3 = boto3.client(
     "s3",
@@ -20,7 +22,7 @@ def send_to_s3(file):
                 "ContentType": file.content_type,
             },
         )
-    except Exception as e:
-        print("S3 upload error: ", e)
-        return e
+    except botocore.exceptions.ClientError as error:
+        # log here
+        raise VideoUploadError(description=error.response["Error"]["Message"])
     return file.filename
