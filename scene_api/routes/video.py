@@ -26,7 +26,7 @@ def list():
 def create(args):
     """Create a video"""
     video = Video.save(args)
-    return video_schema.dump(video)
+    return video_schema.dump(video), 201
 
 
 @blueprint.route("/upload", methods=("POST",))
@@ -41,4 +41,4 @@ def upload(args):
         file_response = send_to_s3(file)
     except VideoUploadError as error:
         raise error
-    return video_upload_response_schema.dump({"file": file_response})
+    return video_upload_response_schema.dump({"file": file_response}), 201

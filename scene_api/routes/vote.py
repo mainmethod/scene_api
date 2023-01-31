@@ -19,4 +19,4 @@ def list():
 def create(args):
     """Create a vote"""
     vote = Vote.save(args)
-    return vote_schema.dump(vote)
+    return vote_schema.dump(vote), 201
