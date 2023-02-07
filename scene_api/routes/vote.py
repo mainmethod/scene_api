@@ -2,15 +2,17 @@ from flask import Blueprint
 from webargs.flaskparser import use_args
 
 from scene_api.models.vote import Vote
+from scene_api.schemas.pagination import pagination_schema
 from scene_api.schemas.vote import vote_schema, votes_schema
 
 blueprint = Blueprint("vote_blueprint", __name__, url_prefix="/votes")
 
 
 @blueprint.route("/", methods=("GET", "OPTIONS"))
-def list():
+@use_args(pagination_schema, location="query")
+def list(args):
     """List all videos"""
-    videos = Vote.query.all()
+    videos = Vote.query.paginate(page=args.get("page"), per_page=args.get("per_page"))
     return votes_schema.dump(videos)
 
 

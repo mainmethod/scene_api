@@ -2,6 +2,7 @@ from flask import Blueprint
 from webargs.flaskparser import use_args
 from werkzeug.utils import secure_filename
 from scene_api.exceptions.errors import VideoUploadError
+from scene_api.schemas.pagination import pagination_schema
 from scene_api.models.video import Video
 from scene_api.schemas.video import (
     video_upload_request_schema,
@@ -15,9 +16,12 @@ blueprint = Blueprint("video_blueprint", __name__, url_prefix="/videos")
 
 
 @blueprint.route("/", methods=("GET", "OPTIONS"))
-def list():
+@use_args(pagination_schema, location="query")
+def list(args):
     """List all videos"""
-    videos = Video.query.filter(Video.deleted_on == None).all()
+    videos = Video.query.filter(Video.deleted_on == None).paginate(
+        page=args.get("page"), per_page=args.get("per_page")
+    )
     return videos_schema.dump(videos)
 
 
