@@ -31,6 +31,7 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """Register Flask blueprints."""
+    app.register_blueprint(routes.errors.blueprint)
     app.register_blueprint(routes.video.blueprint)
     app.register_blueprint(routes.vote.blueprint)
     return None

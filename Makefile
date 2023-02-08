@@ -25,6 +25,9 @@ migrate-down: ## migrate to previous version
 shell: ## run a shell for the flask app
 	@poetry run flask shell
 
+test: ## run unit tests
+	@poetry run python -m pytest
+
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
