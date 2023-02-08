@@ -1,6 +1,7 @@
 """ Video schemas """
 from marshmallow import fields, Schema
 from scene_api.schemas.base import BaseSchema
+from scene_api.schemas.pagination import PaginationResponseSchema
 from scene_api.models.video import Video
 
 
@@ -13,8 +14,9 @@ class VideoSchema(BaseSchema):
         model = Video
 
 
-video_schema = VideoSchema()
-videos_schema = VideoSchema(many=True)
+class VideosSchema(Schema):
+    meta = fields.Nested(PaginationResponseSchema(context={"path": "videos"}))
+    data = fields.Nested(VideoSchema(many=True))
 
 
 class VideoUploadRequestSchema(Schema):
@@ -23,13 +25,7 @@ class VideoUploadRequestSchema(Schema):
     file = fields.Raw(type="file", required=True)
 
 
-video_upload_request_schema = VideoUploadRequestSchema()
-
-
 class VideoUploadResponseSchema(Schema):
     """Schema for video file upload response"""
 
     file = fields.Str(dump_only=True)
-
-
-video_upload_response_schema = VideoUploadResponseSchema()

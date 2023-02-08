@@ -1,6 +1,7 @@
 """ Vote schemas """
-from marshmallow_sqlalchemy import fields
+from marshmallow import fields, Schema
 from scene_api.schemas.base import BaseSchema
+from scene_api.schemas.pagination import PaginationResponseSchema
 from scene_api.models.vote import Vote
 
 
@@ -14,5 +15,6 @@ class VoteSchema(BaseSchema):
         include_fk = True
 
 
-vote_schema = VoteSchema()
-votes_schema = VoteSchema(many=True)
+class VotesSchema(Schema):
+    meta = fields.Nested(PaginationResponseSchema(context={"path": "votes"}))
+    data = fields.Nested(VoteSchema(many=True))
