@@ -22,7 +22,8 @@ def list(args):
     videos = Video.query.filter(Video.deleted_on == None).paginate(
         page=args.get("page"), per_page=args.get("per_page")
     )
-    return VideosSchema().dump({"meta": videos, "data": videos})
+    context = {"args": args, "url_prefix": blueprint.url_prefix}
+    return VideosSchema(context=context).dump({"meta": videos, "data": videos})
 
 
 @blueprint.route("/", methods=("POST",))

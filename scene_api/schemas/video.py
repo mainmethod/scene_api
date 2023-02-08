@@ -15,7 +15,7 @@ class VideoSchema(BaseSchema):
 
 
 class VideosSchema(Schema):
-    meta = fields.Nested(PaginationResponseSchema(context={"path": "videos"}))
+    meta = fields.Nested(PaginationResponseSchema)
     data = fields.Nested(VideoSchema(many=True))
 
 

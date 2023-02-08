@@ -13,7 +13,8 @@ blueprint = Blueprint("vote_blueprint", __name__, url_prefix="/votes")
 def list(args):
     """List all videos"""
     votes = Vote.query.paginate(page=args.get("page"), per_page=args.get("per_page"))
-    return VotesSchema().dump({"meta": votes, "data": votes})
+    context = {"args": args, "url_prefix": blueprint.url_prefix}
+    return VotesSchema(context=context).dump({"meta": votes, "data": votes})
 
 
 @blueprint.route("/", methods=("POST",))

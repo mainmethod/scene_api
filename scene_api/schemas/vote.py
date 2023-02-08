@@ -16,5 +16,5 @@ class VoteSchema(BaseSchema):
 
 
 class VotesSchema(Schema):
-    meta = fields.Nested(PaginationResponseSchema(context={"path": "votes"}))
+    meta = fields.Nested(PaginationResponseSchema)
     data = fields.Nested(VoteSchema(many=True))

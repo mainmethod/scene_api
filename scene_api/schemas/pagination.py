@@ -26,16 +26,20 @@ class PaginationResponseSchema(Schema):
     prev = fields.Method("get_prev")
 
     def get_next(self, obj):
+        """Get next pagination endpoint"""
         if obj["has_next"] is True:
             next_num = obj["next_num"]
-            path = self.context.get("path", "")
-            return f"/api/{path}?page={next_num}"
+            url_prefix = self.context.get("url_prefix", "")
+            per_page = self.context.get("args", {}).get("per_page")
+            return f"{url_prefix}?page={next_num}&per_page={per_page}"
 
     def get_prev(self, obj):
+        """Get previous pagination endpoint"""
         if obj["has_prev"] is True:
             prev_num = obj["prev_num"]
-            path = self.context.get("path", "")
-            return f"/api/{path}?page={prev_num}"
+            url_prefix = self.context.get("url_prefix", "")
+            per_page = self.context.get("args", {}).get("per_page")
+            return f"{url_prefix}?page={prev_num}&per_page={per_page}"
 
     @pre_dump
     def to_dict(self, data, **kwargs):
