@@ -1,0 +1,220 @@
+openapi: 3.0.3
+info:
+  title: Swagger Scene Api - OpenAPI 3.0
+  description: |-
+    This is the OpenAPI Spec for the Scene API
+  contact:
+    email: rob.c.farrell@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+servers:
+  - url: https://127.0.0.1/api/v1
+tags:
+  - name: videos
+    description: User uploaded Videos
+  - name: votes
+    description: Votes for a video
+paths:
+  /videos:
+    post:
+      tags:
+        - videos
+      summary: Add a new video
+      description: Add a new video
+      operationId: models.video.create
+      requestBody:
+        description: Create a new video
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoResponse'          
+        '422':
+          description: Unprocessable entity
+    get:
+      tags:
+        - videos
+      summary: Get list of videos
+      description: Get list of videos
+      operationId: models.video.list
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VideoResponse'
+  /videos/upload:
+    post:
+      tags:
+        - videos
+      summary: uploads a video file
+      description: 'request to upload a video file'
+      operationId: models.videoupload
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VideoUpload'
+  /votes:
+    post:
+      tags:
+        - votes
+      summary: Vote on a video
+      description: Vote on a video
+      operationId: models.vote.create
+      requestBody:
+        description: Vote on a video
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VoteRequest'
+        required: true
+      responses:
+        '201':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VoteResponse'          
+        '422':
+          description: Unprocessable entity
+    get:
+      tags:
+        - votes
+      summary: Get list of votes
+      description: Get list of votes
+      operationId: models.vote.list
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoteResponse'
+
+components:
+  schemas:
+    VideoRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of video
+          example: My cool Video
+        url:
+          type: string
+          description: url of video
+          example: https://aws.com/videos/qyt67
+    VideoResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        name:
+          type: string
+          description: name of video
+          example: My cool video
+        url:
+          type: string
+          description: url of video file
+          example: https://aws.com/videos/qyt67
+        vote_count:
+          type: integer
+          format: int64
+          example: 1
+          description: number of votes for video
+        created_on:
+          type: string
+          description: created date time
+          format: date-time
+        deleted_on:
+          type: string
+          description: deleted date time
+          format: date-time
+    VideoUpload:
+      type: object
+      properties:
+        file:
+          type: string
+          description: url for the file upload
+          example: https://aws.com/videos/qyt67
+    VoteRequest:
+      type: object
+      properties:
+        video_id:
+          type: integer
+          format: int64
+          example: 1
+          description: id for the video to vote on
+        voter_email:
+          type: string
+          description: email/id of the user voting
+          example: rob@scene-app.com
+    VoteResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        video_id:
+          type: integer
+          format: int64
+          example: 1
+          description: id for the video to vote on
+        voter_email:
+          type: string
+          description: email/id of the user voting
+          example: rob@scene-app.com
+        created_on:
+          type: string
+          description: created date time
+          format: date-time
+        deleted_on:
+          type: string
+          description: deleted date time
+          format: date-time
+        video:
+          $ref: '#/components/schemas/VideoRequest'
+  requestBodies:
+    Video:
+      description: Video object
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/VideoRequest'
+    VideoUpload:
+      description: Video Upload
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/VideoUpload'
