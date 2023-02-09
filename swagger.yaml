@@ -59,7 +59,7 @@ paths:
     post:
       tags:
         - videos
-      summary: uploads a video file
+      summary: Upload a video file
       description: 'request to upload a video file'
       operationId: models.videoupload
       requestBody:
@@ -73,7 +73,7 @@ paths:
                   format: binary
       responses:
         '201':
-          description: successful operation
+          description: successful request
           content:
             application/json:
               schema:
@@ -210,11 +210,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/VideoRequest'
-    VideoUpload:
-      description: Video Upload
+    Vote:
+      description: Vote object
       content:
         application/json:
           schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/VideoUpload'
+            $ref: '#/components/schemas/VoteRequest'
