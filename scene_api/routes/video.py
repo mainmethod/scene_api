@@ -1,6 +1,8 @@
 from flask import Blueprint
 from webargs.flaskparser import use_args
 from werkzeug.utils import secure_filename
+
+from scene_api.decorators.auth import requires_auth
 from scene_api.exceptions.errors import VideoUploadError
 from scene_api.models.video import Video
 from scene_api.schemas.pagination import PaginationSchema
@@ -17,6 +19,7 @@ blueprint = Blueprint("video_blueprint", __name__, url_prefix="/videos")
 
 @blueprint.route("/", methods=("GET", "OPTIONS"))
 @use_args(PaginationSchema, location="query")
+@requires_auth
 def list(args):
     """List all videos"""
     videos = Video.query.filter(Video.deleted_on == None).paginate(
@@ -28,6 +31,7 @@ def list(args):
 
 @blueprint.route("/", methods=("POST",))
 @use_args(VideoSchema)
+@requires_auth
 def create(args):
     """Create a video"""
     video = Video.save(args)
@@ -36,6 +40,7 @@ def create(args):
 
 @blueprint.route("/upload", methods=("POST",))
 @use_args(VideoUploadRequestSchema, location="files")
+@requires_auth
 def upload(args):
     """Upload video to s3"""
 
