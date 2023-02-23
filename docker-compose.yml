@@ -1,0 +1,9 @@
+# docker-compose.yaml
+version: '3'
+
+services:
+  api:
+    build: '.'
+    image: scene_api/api
+    ports:
+      - '8020:8020'
