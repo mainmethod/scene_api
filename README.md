@@ -23,3 +23,8 @@ make init-db
 make migrate
 make run
 ```
+
+# Running with Docker
+```
+make docker-up
+```
